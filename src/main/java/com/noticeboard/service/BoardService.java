@@ -18,7 +18,7 @@ public interface BoardService {
 	/**
 	 * 게시판 목록 조회
 	 * @param BoardVO
-	 * @return List<HashMap<String, Object>>
+	 * @return List<BoardVO>
 	 */
 	public List<BoardVO> noticeList(BoardVO board);
 	
@@ -33,7 +33,7 @@ public interface BoardService {
 	/**
 	 * 게시글 상세 조회
 	 * @param BoardVO
-	 * @return int
+	 * @return List<HashMap<String, Object>>
 	 */
 	public List<HashMap<String, Object>> noticeView(BoardVO board);
 	
@@ -78,7 +78,7 @@ public interface BoardService {
 	/**
 	 * 이미지 게시글 상세 조회
 	 * @param BoardVO
-	 * @return int
+	 * @return List<HashMap<String, Object>>
 	 */
 	public List<HashMap<String, Object>> noticeImgView(BoardVO board);
 	
