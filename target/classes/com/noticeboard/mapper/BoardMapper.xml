@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.noticeboard.mapper.BoardMapper">
+ 	<!-- 게시글 등록 -->
+ 	<insert id="noticeRegist" parameterType="com.noticeboard.model.BoardVO">
+ 		INSERT INTO NOTICE_BOARD
+ 		(title, content, reg_dt, update_dt)
+ 		VALUES
+ 		(#{title}, #{content}, #{regDt}, #{updateDt})
+ 	</insert>
+ 	<!-- 게시판 목록 조회 -->
+ 	<select id="noticeList" parameterType="com.noticeboard.model.BoardVO" resultType="com.noticeboard.model.BoardVO">
+ 		SELECT 
+ 		no, title, content, reg_dt AS regDt
+ 		FROM notice_board 
+ 		<if test=' startDataCount != null and startDataCount != -1 and displayRow != null '>
+ 			<!-- mysql or mariaDB -->
+			<!-- LIMIT #{startDataCount},#{displayRow} -->
+			<!-- postgreSQL -->
+			LIMIT #{displayRow} OFFSET #{startDataCount}
+		</if>
+ 		
+ 	</select>
+ 	
+ 	<!-- 게시판 총 데이터 갯수 조회 -->
+ 	<select id="noticeListCnt" parameterType="com.noticeboard.model.BoardVO" resultType="int">
+ 		SELECT
+ 		count(*) 
+ 		FROM notice_board
+ 	</select>
+ 	
+ 	<!-- 게시글 상세 조회 -->
+ 	<select id="noticeView" parameterType="com.noticeboard.model.BoardVO" resultType="com.noticeboard.model.BoardVO">
+ 		SELECT 
+ 		no, title, content, reg_dt AS regDt
+ 		FROM notice_board
+ 		WHERE 1=1 AND no = #{no}
+ 	</select>
+ 	
+ 	<!-- 게시글 수정 -->
+ 	<update id="noticeUpdate" parameterType="com.noticeboard.model.BoardVO">
+ 		UPDATE notice_board 
+ 		SET
+ 		title = #{title}, content = #{content}
+ 		WHERE 1=1 AND no = #{no}
+ 	</update>
+ 	
+ 	 <!-- 게시글 삭제 -->
+ 	<delete id="noticeDelete" parameterType="com.noticeboard.model.BoardVO">
+ 		DELETE FROM notice_board 
+ 		WHERE 1=1 AND no = #{no}
+ 	</delete>
+ 	
+ 	<!-- 이미지 게시글 등록 -->
+ 	<insert id="noticeImgRegist" parameterType="com.noticeboard.model.BoardVO">
+ 		INSERT INTO notice_img_board
+ 		(title, content, img_file_name, img_file_path)
+ 		VALUES
+ 		(#{title}, #{content}, #{imgFileName}, #{imgFilePath})
+ 	</insert>
+ 	
+ 	<!-- 이미지 게시판 목록 조회 -->
+ 	<select id="noticeImgList" parameterType="com.noticeboard.model.BoardVO" resultType="com.noticeboard.model.BoardVO">
+ 		SELECT 
+ 		no, title, img_file_name AS imgFileName, img_file_path AS imgFilePath, reg_dt AS regDt
+ 		FROM notice_img_board
+ 		<if test=' startDataCount != null and displayRow != null '>
+ 			<!-- mysql or mariaDB -->
+			<!-- LIMIT #{startDataCount},#{displayRow} -->
+			
+			<!-- postgreSQL -->
+			LIMIT #{displayRow} OFFSET #{startDataCount}
+		</if>
+ 	</select>
+ 	
+ 	<!-- 이미지 게시판 총 데이터 갯수 조회 -->
+ 	<select id="noticeImgListCnt" parameterType="com.noticeboard.model.BoardVO" resultType="int">
+ 		SELECT
+ 		count(*) 
+ 		FROM notice_img_board
+ 	</select>
+ 	
+ 	<!-- 이미지 게시글 상세 조회 -->
+ 	<select id="noticeImgView" parameterType="com.noticeboard.model.BoardVO" resultType="com.noticeboard.model.BoardVO">
+ 		SELECT 
+ 		no, title, content, img_file_name AS imgFileName, img_file_path AS imgFilePath, reg_dt AS regDt 
+ 		FROM notice_img_board 
+ 		WHERE 1=1 AND no = #{no}
+ 	</select>
+ 	
+ 	<!-- 이미지 게시글 삭제 -->
+ 	<delete id="noticeImgDelete" parameterType="com.noticeboard.model.BoardVO">
+ 		DELETE FROM notice_img_board 
+ 		WHERE 1=1 AND no = #{no}
+ 	</delete>
+ 	
+ 	 <!-- 이미지 게시글 수정 -->
+ 	<update id="noticeImgUpdate" parameterType="com.noticeboard.model.BoardVO">
+ 		UPDATE notice_img_board 
+ 		SET
+ 		title = #{title}, content = #{content}
+ 		<if test=' imgFileName != null and imgFileName != "" '>
+ 			,img_file_name = #{imgFileName}
+ 		</if>
+ 		<if test=' imgFilePath != null and imgFilePath != "" '>
+ 			,img_file_path = #{imgFilePath}
+ 		</if>
+ 		WHERE 1=1 AND no = #{no}
+ 	</update>
+ 	 
+ </mapper>
